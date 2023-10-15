@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+      <!-- Linking to Google Fonts for custom fonts -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Rye&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Autour+One&family=Carter+One&family=Rye&display=swap" rel="stylesheet">
+
+    <title>JavaScript Quiz Game Florentino</title>    <!-- title of the webpage -->
+    
+
+ <!-- CSS style -->
+    <style> 
+    
+ /* General styling for the body */
+       body {
+            font-family: 'Carter One', cursive;
+            margin: 0;
+            font-size: 1.8vw; 
+            
+        }
+     /* Styling for common elements of questions, labels, p, input, button, result */
+        .question, p, label, input, button, #result {
+        font-size: 1.8vw; 
+        font-family: 'Carter One', cursive;
+        color: white;
+        -webkit-text-stroke: 2px red; /* Add this line for the outline effect in WebKit browsers */
+
+         }
+
+        
+
+        #timer, #score {
+        font-size: 2vw; 
+        font-family: 'Carter One', cursive;
+            font-family: 'Rye', cursive;
+            color: red;
+            -webkit-text-stroke: 1px black; 
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Add this line for a shadow effect */
+        }
+       
+
+
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+
+        .quiz-container {
+            max-width: 600px;
+            margin: 20px auto;
+            z-index: 1000;
+        }
+        .question {
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .options {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .options li {
+            margin-bottom: 5px;
+        }
+
+        #timer {
+            margin-bottom: 10px;
+        }
+
+        #score {
+            display: none;
+            margin-top: 20px;
+        }
+        input[type="radio"] {
+        transform: scale(2);
+        }
+        #key-answers {
+        color: white;
+        }
+
+        #key-answers li {
+        -webkit-text-stroke: 3px black; 
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); 
+        }
+        #header {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1001; /* Ensure it's above the video background */
+        }
+
+        #header h1 {
+            margin: 0;
+            font-size: 2em;
+            font-family: 'Carter One', cursive;
+            font-family: 'Rye', cursive;
+            color: red;
+            -webkit-text-stroke: .5px black; 
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Add this line for a shadow effect */
+        }
+
+        #header p {
+            margin: 0;
+            font-size: 1.2em;
+            font-family: 'Autour One', cursive;
+            font-family: 'Carter One', cursive;
+            font-family: 'Rye', cursive;
+            color: darkorange;
+            -webkit-text-stroke: .5px black; 
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 1); /* Add this line for a shadow effect */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <h1>One Piece Quiz</h1>
+        <p>Welcome to the One Piece Quiz Game! Let's Begin!</p>
+    </div>
+    
+<video id="video-background" playsinline autoplay muted loop>
+    <source src="luffy4.mp4" type="video/mp4">
+</video>
+
+
+<div class="quiz-container">
+    <div class="question" id="question1">
+        <h2>Multiple Choice Question</h2>
+        <p>Who is the captain of the Straw Hat Pirates?</p>
+        <ul class="options">
+            <li>
+                <label><input type="radio" name="q1" value="a"> a) Zoro</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q1" value="b"> b) Nami</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q1" value="c"> c) Luffy</label>
+            </li>
+        </ul>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question2">
+        <h2>Multiple Choice Question</h2>
+        <p>What is the name of Luffy's signature attack?</p>
+        <ul class="options">
+            <li>
+                <label><input type="radio" name="q2" value="a"> a) Red Hawk</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q2" value="b"> b) Gomu Gomu no Gatling</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q2" value="c"> c) King Kong Gun</label>
+            </li>
+        </ul>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question3">
+        <h2>Multiple Choice Question</h2>
+        <p>Which Devil Fruit did Luffy eat?</p>
+        <ul class="options">
+            <li>
+                <label><input type="radio" name="q3" value="a"> a) Mera Mera no Mi
+                </label>
+            </li>
+            <li>
+                <label><input type="radio" name="q3" value="b"> b) Gura Gura no Mi</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q3" value="c"> c) Gomu Gomu no Mi</label>
+            </li>
+        </ul>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question4">
+        <h2>Multiple Choice Question</h2>
+        <p>Who is known as the "Pirate Hunter" in the Straw Hat crew?</p>
+        <ul class="options">
+            <li>
+                <label><input type="radio" name="q4" value="a"> a) Franky</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q4" value="b"> b)  Zoro</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q4" value="c"> c) Sanji</label>
+            </li>
+        </ul>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question5">
+        <h2>Multiple Choice Question</h2>
+        <p>What is the name of the ship used by the Straw Hat Pirates?</p>
+        <ul class="options">
+            <li>
+                <label><input type="radio" name="q5" value="a"> a) Oro Jackson</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q5" value="b"> b) Going Merry</label>
+            </li>
+            <li>
+                <label><input type="radio" name="q5" value="c"> c) Red Force</label>
+            </li>
+        </ul>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question6">
+        <h2>True or False Question</h2>
+        <p>Zoro wields four swords in his unique four-sword style.</p>
+        <label><input type="radio" name="q6" value="true"> True</label>
+        <label><input type="radio" name="q6" value="false"> False</label>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question7">
+        <h2>True or False Question</h2>
+        <p>Monkey D. Luffy's goal is to become the Pirate King.</p>
+        <label><input type="radio" name="q7" value="true"> True</label>
+        <label><input type="radio" name="q7" value="false"> False</label>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question8">
+        <h2>True or False Question</h2>
+        <p>The Going Merry was the first ship of the Straw Hat Pirates.</p>
+        <label><input type="radio" name="q8" value="true"> True</label>
+        <label><input type="radio" name="q8" value="false"> False</label>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question9">
+        <h2>True or False Question</h2>
+        <p>Nico Robin can read the Poneglyphs, ancient inscriptions that reveal the True History.</p>
+        <label><input type="radio" name="q9" value="true"> True</label>
+        <label><input type="radio" name="q9" value="false"> False</label>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question10">
+        <h2>True or False Question</h2>
+        <p>The character Nami has the ability to control fire using the Mera Mera no Mi Devil Fruit.</p>
+        <label><input type="radio" name="q10" value="true"> True</label>
+        <label><input type="radio" name="q10" value="false"> False</label>
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question11">
+        <h2>Identification Question</h2>
+        <p>Who is the swordsman in the Straw Hat crew known for his three-sword style?</p>
+        <input type="text" id="q11">
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question12">
+        <h2>Identification Question</h2>
+        <p>Who is the archaeologist in the Straw Hat crew?</p>
+        <input type="text" id="q12">
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question13">
+        <h2>Identification Question</h2>
+        <p>Who is the shipwright and carpenter of the Straw Hat crew?</p>
+        <input type="text" id="q13">
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question14">
+        <h2>Identification Question</h2>
+        <p>What is the name of the reindeer who is also the doctor in the Straw Hat crew?</p>
+        <input type="text" id="q14">
+        <button onclick="nextQuestion()">Next</button>
+    </div>
+
+    <div class="question" id="question15">
+        <h2>Identification Question</h2>
+        <p>Who is the sniper in the Straw Hat crew with a long nose?</p>
+        <input type="text" id="q15">
+        <button onclick="submitQuiz()">Submit</button>
+    </div>
+
+    <!-- Timer and Score Section -->
+    <div id="timer">Time remaining: 30 seconds</div>
+    
+    <div id="score">
+        <h2>Quiz Result</h2>
+        <p id="result"></p>
+         <button onclick="showKeyAnswers()">Show Key Answers</button>
+        <button onclick="restartGame()">Restart</button>
+    </div>
+</div>
+
+ <!-- Ordered list of the key answers. -->
+<div id="key-answers" style="display: none;">
+    <h2>Key Answers</h2>
+    <ol>
+        <li>Who is the captain of the Straw Hat Pirates? - Correct Answer: c) Luffy</li>
+        <li>What is the name of Luffy's signature attack? - Correct Answer: b) Gum-Gum Gutling</li>
+        <li>Which Devil Fruit did Luffy eat? - Correct Answer: c) Gomu Gomu no Mi</li>
+        <li>Who is known as the "Pirate Hunter" in the Straw Hat crew? - Correct Answer: b) Zoro</li>
+        <li>What is the name of the ship used by the Straw Hat Pirates? - Correct Answer: b) Going Merry</li>
+        <br>
+        <li>Zoro wields four swords in his unique four-sword style. - Correct Answer: False</li>
+        <li>Monkey D. Luffy's goal is to become the Pirate King. - Correct Answer: True</li>
+        <li>The Going Merry was the first ship of the Straw Hat Pirates. - Correct Answer: True</li>
+        <li>Nico Robin can read the Poneglyphs, ancient inscriptions that reveal the True History. - Correct Answer: True</li>
+        <li>The character Nami has the ability to control fire using the Mera Mera no Mi Devil Fruit. - Correct Answer: False</li>
+       <br>
+        <li>Who is the swordsman in the Straw Hat crew known for his three-sword style. - Correct Answer: Roronoa Zoro</li>
+        <li>Whi is the archaeologist in the Straw Hat crew. - Correct Answer: Nico Robin</li>
+        <li>Who is the shipwright and carpenter of the Straw Hat crew. - Correct Answer: Franky</li>
+        <li>What is the name of the reindeer who is also the doctor in the Straw Hat crew. - Chopper</li>
+        <li>Who is the sniper in the Straw Hat crew with a long nose. - Correct Answer: Usopp</li>
+        
+    </ol>
+</div>
+
+<script>
+    let currentQuestion = 0;
+    const questions = document.querySelectorAll('.question');
+    const timerDuration = 30; // in seconds
+    let timer;
+    let userScore = 0;
+
+    function showQuestion(index) {
+        questions.forEach((question, i) => {
+            question.style.display = i === index ? 'block' : 'none';
+        });
+
+        startTimer();
+    }
+
+    function startTimer() {
+        let secondsRemaining = timerDuration;
+        updateTimerDisplay(secondsRemaining);
+
+        timer = setInterval(function () {
+            secondsRemaining--;
+
+            if (secondsRemaining >= 0) {
+                updateTimerDisplay(secondsRemaining);
+            } else {
+                clearInterval(timer);
+                nextQuestion();
+            }
+        }, 1000);
+    }
+
+    function updateTimerDisplay(seconds) {
+    const timerElement = document.getElementById('timer');
+    if (timerElement) {
+        timerElement.textContent = `Time remaining: ${seconds} seconds`;
+    }
+}
+
+
+    function nextQuestion() {
+        clearInterval(timer);
+
+        const currentAnswer = getCurrentAnswer();
+        checkAnswer(currentAnswer);
+
+        currentQuestion++;
+
+        if (currentQuestion < questions.length) {
+            showQuestion(currentQuestion);
+        } else {
+            endQuiz();
+        }
+    }
+
+    function getCurrentAnswer() {
+        if (currentQuestion < 5) {
+            return document.querySelector(`input[name="q${currentQuestion + 1}"]:checked`);
+        } else if (currentQuestion < 10) {
+            return document.querySelector(`input[name="q${currentQuestion + 1}"]:checked`);
+        } else {
+            return document.getElementById(`q${currentQuestion + 1}`).value.trim().toLowerCase();
+        }
+    }
+// cehck the user answers
+    function checkAnswer(answer) {
+        const correctAnswers = {
+            q1: 'c',
+            q2: 'b',
+            q3: 'c',
+            q4: 'b',
+            q5: 'b',
+            q6: 'false',
+            q7: 'true',
+            q8: 'true',
+            q9: 'true',
+            q10: 'false',
+            q11: 'zoro',
+            q12: 'nico robin',
+            q13: 'franky',
+            q14: 'chopper',
+            q15: 'usopp'
+        };
+
+        if (currentQuestion < 5) {
+            if (answer && answer.value === correctAnswers[`q${currentQuestion + 1}`]) {
+                userScore++;
+            }
+        } else if (currentQuestion < 10) {
+            if (answer && answer.value === correctAnswers[`q${currentQuestion + 1}`]) {
+                userScore++;
+            }
+        } else {
+            if (answer && answer === correctAnswers[`q${currentQuestion + 1}`]) {
+                userScore++;
+            }
+        }
+    }
+
+    function submitQuiz() {
+        const currentAnswer = getCurrentAnswer();
+        checkAnswer(currentAnswer);
+        endQuiz();
+    }
+
+    function endQuiz() {
+        clearInterval(timer);
+        showScore();
+    }
+
+    function showScore() {
+        const resultElement = document.getElementById('result');
+        resultElement.innerText = `Your score is ${userScore} out of 15`;
+        document.getElementById('score').style.display = 'block';
+    }
+
+    function restartGame() {
+    currentQuestion = 0;
+    userScore = 0;
+    showQuestion(currentQuestion);
+    document.getElementById('score').style.display = 'none';
+    document.getElementById('key-answers').style.display = 'none';
+    document.getElementById('header').style.display = 'block'; 
+     document.getElementById('timer').style.display = 'block';
+}
+
+
+
+    // Start the quiz by showing the first question
+    showQuestion(currentQuestion);
+    
+
+    function showKeyAnswers() {
+    // Hide the questions, header, and timer, but keep the score section visible
+    questions.forEach(question => {
+        question.style.display = 'none';
+    });
+    document.getElementById('header').style.display = 'none';
+    document.getElementById('timer').style.display = 'none';
+    document.getElementById('key-answers').style.display = 'block';
+    document.getElementById('score').style.display = 'block';
+    }
+
+</script>
+
+</body>
+</html>
